@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:background="@drawable/bg"
+  android:orientation="vertical"
+  android:layout_height="fill_parent">
+	<ImageView android:visibility="invisible" android:id="@+id/result_toast" android:paddingTop="66px" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/search_toast" android:layout_gravity="center_horizontal"></ImageView>
+<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+  <View android:layout_width="3px" android:layout_height="46px"/>  
+  <ListView android:fadingEdge = "none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/android:list"></ListView>
+</LinearLayout>
+  
+<RelativeLayout android:layout_gravity="top" android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="64px" android:background="@drawable/icon_bg">
+  	<ImageView android:id="@+id/ico1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="5px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico1" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico3" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico2" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico4" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico3" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico5" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico4" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico6" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico5" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/ico7" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ico6" android:paddingLeft="20px" android:paddingTop="5px"></ImageView>
+	<ImageView android:id="@+id/bookmark_list_btn" android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/bookmark_off_small_" android:layout_alignParentRight="true"  android:padding="5px"></ImageView>
+</RelativeLayout>
+<ImageView android:id="@+id/help" android:layout_width="wrap_content" android:src="@drawable/help" android:layout_gravity="bottom|center_horizontal" android:layout_height="wrap_content"></ImageView>
+</FrameLayout>

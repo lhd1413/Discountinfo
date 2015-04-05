@@ -1,0 +1,44 @@
+package com.discountinfo;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class ChaindbHandler extends SQLiteOpenHelper {
+	private static final String DATABASE_NAME = "chain.db";
+    private static final int DATABASE_VERSION = 1;
+
+        
+    ChaindbHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+ 
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		
+		// Create the PetType table
+		db.execSQL("CREATE TABLE IF NOT EXISTS chain_list (" +
+				  "_id INTEGER," +
+				  "cat_no INTEGER," +
+				  "scat_no INTEGER," +
+				  "name TEXT," +
+				  "skt_p1 INTEGER," +
+				  "skt_p2 INTEGER," +
+				  "kt_p1 INTEGER," +
+				  "kt_p2 INTEGER," +
+				  "lgt_p1 INTEGER," +
+				  "lgt_p2 INTEGER," +
+				  "dsecription TEXT" +
+			  	  ")");
+	}
+	
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// Housekeeping here. Implement how "move" your application data during an upgrade of schema versions		
+	}
+
+	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+	}
+}

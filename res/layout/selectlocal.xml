@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:background="@drawable/bg"
+  android:layout_gravity="center"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+<FrameLayout
+	android:id="@+id/FrameLayout01"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_gravity="center">
+	<com.google.android.maps.MapView
+	        android:id="@+id/map"
+	        android:clickable = "true"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" android:apiKey="AIzaSyBimYA8cKvgtr0ctIWpvfYe0jdDgaHgUhc"/>
+	<ImageView android:id="@+id/Pinset" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		android:src="@drawable/mark_me" android:layout_gravity="center" android:visibility="invisible"></ImageView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Selectlabel" android:text="@string/selectlabel" android:layout_gravity="bottom|right" android:textColor="#000000" android:textSize="12px" android:visibility="invisible"></TextView>
+</FrameLayout>
+<TableLayout android:padding="5px" android:id="@+id/TableLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:stretchColumns="1" android:layout_gravity="top|center" android:background="@drawable/map_search_bg_0_38">
+	<TableRow
+			android:id="@+id/TableRow01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:paddingTop="3px">
+		<ImageButton android:background="@drawable/btn2" android:id="@+id/Nowlocbtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"></ImageButton>
+		<AutoCompleteTextView android:layout_marginLeft="5dp" android:completionThreshold="1" android:hint="장소 또는 지명 입력" android:id="@+id/EditTextSpecies" android:background="@drawable/search_input" android:padding="5dp" android:textSize="16sp" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1"></AutoCompleteTextView>
+		<ImageButton android:background="@drawable/btn4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/apply_btn" android:layout_gravity="center" android:paddingTop="1px"></ImageButton>
+</TableRow>
+</TableLayout>
+
+</FrameLayout>

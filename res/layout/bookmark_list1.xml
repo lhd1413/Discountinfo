@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="480px"
+  android:layout_height="71px"
+  android:orientation="horizontal" android:background="@drawable/bg_alist">
+	<TextView android:id="@+id/bookmark1_area" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginLeft="55px" android:textColor="#ffffff" android:textStyle="bold"></TextView>
+</LinearLayout>

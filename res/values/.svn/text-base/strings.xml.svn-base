@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="confirmbtn">확인</string>
+    <string name="lifestylemenu3">여가거리</string>
+    <string name="lifestylemenu2">즐길거리</string>
+    <string name="lifestyle_menu1">먹을거리</string>
+    <string name="menu4">설정</string>
+    <string name="menu3">할인정보</string>
+    <string name="menu2">즐겨찾기</string>
+    <string name="menu1">할인검색</string>
+    <string name="selectlabel">반경 500m 내에서 검색됩니다.</string>
+    <string name="testbed">현재열나게 개발중 ~_~</string>
+    <string name="apply_btn">검색</string>
+    <string name="now_loc">현재위치</string>
+    <string name="hello">소지하고 있는 통신사 카드를 선택하여 주십시오</string>
+    <string name="app_name">User Application</string>
+</resources>

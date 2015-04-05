@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="notify">접속환경에 따라 데이터요금이 부과될 수 있습니다.</string>
+    <string name="twitter_sign_auto">정보 기억</string>
+    <string name="twitter_password">Password</string>
+    <string name="twitter_id">User name or email</string>
+    <string name="testbedstr">20%</string>
+    <string name="detail_page_label5">찾아오는 방법:</string>
+    <string name="detail_page_label4">할인정보:</string>
+    <string name="detail_page_label3">거리:</string>
+    <string name="detail_page_label2">영업시간:</string>
+    <string name="detail_page_label1">주소:</string>
+    <string name="menu_label2">할인받을 수 있는 영업점 찾기</string>
+    <string name="menu_label1">통신사 SKT, KT, LGT 멤버쉽 카드로</string>
+    <string name="configstr2">통신사 멤버쉽 카드를 선택해 주세요.</string>
+    <string name="configstr1">소지하고 계신</string>
+    <string name="lifestylelable">검색하고 싶은 할인 서비스의 종류를 선택해 주세요.</string>
+    <string name="detail_label4">찾아가는 길</string>
+    <string name="detail_label3">할인정보</string>
+    <string name="confirmbtn">확인</string>
+    <string name="lifestylemenu3">여가거리</string>
+    <string name="lifestylemenu2">즐길거리</string>
+    <string name="lifestyle_menu1">먹을거리</string>
+    <string name="menu4">설정</string>
+    <string name="menu3">할인정보</string>
+    <string name="menu2">즐겨찾기</string>
+    <string name="menu1">할인검색</string>
+    <string name="selectlabel">반경 500m 내에서 검색됩니다.</string>
+    <string name="testbed">현재열나게 개발중 ~_~</string>
+    <string name="apply_btn">검색</string>
+    <string name="now_loc">현재위치</string>
+    <string name="hello">소지하고 있는 통신사 카드를 선택하여 주십시오</string>
+    <string name="app_name">할인을 찾아서</string>
+    <string name="address">주소</string>
+    <string name="distance">남은 거리</string>
+    <string name="discountInfo">할인 정보</string>
+    <string name="way">찾아 오시는 길</string>
+    <string name="skt_discount">SKT</string>
+    <string name="kt_discount">KT</string>
+    <string name="lgt_discount">LGT</string>
+    <string name="detail_label1">위치 :  </string>
+    <string name="detail_label2">거리 :  </string>
+</resources>

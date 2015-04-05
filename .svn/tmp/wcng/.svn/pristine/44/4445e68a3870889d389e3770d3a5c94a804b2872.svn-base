@@ -1,0 +1,178 @@
+package com.discountinfo;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import android.app.ListActivity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+public class ResultListActivity extends ListActivity {
+	
+	protected double lat = 0f;
+	protected double lon = 0f;
+	protected int lifestyle;
+	protected int chain_no;
+	protected String location_name;
+	protected String chain_name;
+	private ArrayList<Chaininfo> array_list;
+	private String car;
+	
+	
+	/**
+	 * @see android.app.Activity#onCreate(Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+        setContentView(R.layout.resultlist);
+        lat = getIntent().getDoubleExtra("lat", 0);
+        lon = getIntent().getDoubleExtra("lon", 0);
+        lifestyle = getIntent().getIntExtra("lifestyle", 0);
+        chain_no = getIntent().getIntExtra("chain_no", 0);
+
+        chain_name = getIntent().getStringExtra("chain_name");
+        location_name = getIntent().getStringExtra("location_name");
+        car = getIntent().getStringExtra("career");
+        
+        TextView tt = (TextView) findViewById(R.id.Searchlabel1);
+        TextView tt2 = (TextView) findViewById(R.id.Searchlabel2);
+        try{
+        	URL url;
+        	if(lifestyle == 0){
+        		url = new URL("http://airnaru.com/discount_search.php?x="+lon+"&y="+lat+"&q="+chain_no+"&career="+car);
+        		tt.setText(chain_name);
+        		tt2.setText(location_name + " 인근의 가맹점 검색결과");
+        	}else{
+        		url = new URL("http://airnaru.com/discount_search.php?x="+lon+"&y="+lat+"&cat_no="+lifestyle+"&career="+car);
+        		
+        		tt.setText(location_name + " 인근");
+        		
+        		if(lifestyle == 1)
+        			tt2.setText("먹을거리 검색결과");
+        		else if(lifestyle == 2)
+        			tt2.setText("즐길거리 검색결과");
+        		else if(lifestyle == 3)
+        			tt2.setText("여가거리 검색결과");
+        	}	
+        	
+        	URLConnection connection;
+			connection = url.openConnection();
+			
+			HttpURLConnection httpconnection = (HttpURLConnection)connection;
+			
+			int responseCode = httpconnection.getResponseCode();
+			
+			if(responseCode == HttpURLConnection.HTTP_OK)
+			{
+				InputStream in = httpconnection.getInputStream();
+				
+				DocumentBuilderFactory dbf;
+				dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				
+				Document dom = db.parse(in);
+				
+				Element root = dom.getDocumentElement();
+				
+				NodeList items = root.getElementsByTagName("item");
+				
+				int length = items.getLength();
+				
+				array_list = new ArrayList<Chaininfo>();
+				
+				if(items != null && length > 0)
+				{
+					for(int i=0; i < length; i++)
+					{
+						Element item = (Element) items.item(i);
+						
+						Element _id = (Element) item.getElementsByTagName("_id").item(0);
+						Element chain_no = (Element) item.getElementsByTagName("chain_no").item(0);
+						Element name = (Element) item.getElementsByTagName("name").item(0);
+						Element tele = (Element) item.getElementsByTagName("tele").item(0);
+						Element address = (Element) item.getElementsByTagName("address").item(0);
+						Element mapx = (Element) item.getElementsByTagName("mapx").item(0);
+						Element mapy = (Element) item.getElementsByTagName("mapy").item(0);
+						Element skt_p1 = (Element) item.getElementsByTagName("skt_p1").item(0);
+						Element skt_p2 = (Element) item.getElementsByTagName("skt_p2").item(0);
+						Element lgt_p1 = (Element) item.getElementsByTagName("lgt_p1").item(0);
+						Element lgt_p2 = (Element) item.getElementsByTagName("lgt_p2").item(0);
+						Element kt_p1 = (Element) item.getElementsByTagName("kt_p1").item(0);
+						Element kt_p2 = (Element) item.getElementsByTagName("kt_p2").item(0);
+						Element distance = (Element) item.getElementsByTagName("distance").item(0);
+						
+						Chaininfo cinfo = new Chaininfo(_id.getFirstChild().getNodeValue(), Integer.parseInt(chain_no.getFirstChild().getNodeValue()), name.getFirstChild().getNodeValue(), tele.getFirstChild().getNodeValue(), address.getFirstChild().getNodeValue(), Double.parseDouble(mapx.getFirstChild().getNodeValue()), Double.parseDouble(mapy.getFirstChild().getNodeValue()), Integer.parseInt(skt_p1.getFirstChild().getNodeValue()), Integer.parseInt(skt_p2.getFirstChild().getNodeValue()), Integer.parseInt(kt_p1.getFirstChild().getNodeValue()), Integer.parseInt(kt_p2.getFirstChild().getNodeValue()), Integer.parseInt(lgt_p1.getFirstChild().getNodeValue()), Integer.parseInt(lgt_p2.getFirstChild().getNodeValue()), Integer.parseInt(distance.getFirstChild().getNodeValue()));
+						if(_id.getFirstChild().getNodeValue() != null)
+							array_list.add(cinfo);
+						
+					}
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		ChainAdapter m_adapter = new ChainAdapter(this, R.layout.row_list2, array_list);
+        setListAdapter(m_adapter);
+		
+	}
+	
+	private class ChainAdapter extends ArrayAdapter<Chaininfo> {
+
+        private ArrayList<Chaininfo> items;
+
+        public ChainAdapter(Context context, int textViewResourceId, ArrayList<Chaininfo> items) {
+                super(context, textViewResourceId, items);
+                this.items = items;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+                View v = convertView;
+                if (v == null) {
+                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.row_list2, null);
+                }
+                Chaininfo p = items.get(position);
+                if (p != null) {
+                        TextView tt = (TextView) v.findViewById(R.id.Brand_name2);
+                        TextView bt = (TextView) v.findViewById(R.id.SKTdiscount2);
+                        TextView bt2 = (TextView) v.findViewById(R.id.KTdiscount2);
+                        TextView bt3 = (TextView) v.findViewById(R.id.LGTdiscount2);
+                        TextView bt4 = (TextView) v.findViewById(R.id.Distance);
+                        
+                        if(tt != null)
+                        	tt.setText(p.getname());                            
+                        
+                        if(bt != null)
+                        	bt.setText("SKT : "+p.getskt_p1() + "%");
+                        
+                        if(bt2 != null)
+                        	bt2.setText("KT : "+p.getkt_p1() + "%");
+                        
+                        if(bt3 != null)
+                        	bt3.setText("LGT : "+p.getlgt_p1() + "%");
+                        
+                        if(bt4 != null)
+                        	bt4.setText(p.getdistance()+"m");
+                }
+                return v;
+        }
+	}
+}

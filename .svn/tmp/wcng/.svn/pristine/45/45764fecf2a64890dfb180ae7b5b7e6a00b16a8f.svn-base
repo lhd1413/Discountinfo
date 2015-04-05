@@ -1,0 +1,154 @@
+package com.discountinfo;
+
+import java.util.ArrayList;
+
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class Resultdiscountinfo extends ListActivity {
+	
+	protected SQLiteDatabase mDB = null;
+	protected ChaindbHandler mDatabase = null;
+	protected Cursor mCursor = null;
+	protected ArrayList<Chaininfo> items;
+	protected String career;
+	
+	/**
+	 * @see android.app.Activity#onCreate(Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.listdiscount);
+		
+		career = getIntent().getStringExtra("career");
+		
+		mDatabase = new ChaindbHandler(this.getApplicationContext());
+		mDB = mDatabase.getWritableDatabase();
+		
+		String[] car_arr = career.split(",");
+		String query = "cat_no = ? AND ";
+		String flag = getIntent().getStringExtra("display_flag");
+		
+		for(int i = 0; i<car_arr.length; i++)
+		{
+			if(car_arr[i].toString() == "0")
+				query += "skt_p1 != '0'";
+			else if(car_arr[i].toString() == "1")
+				query += "kt_p1 != '0'";
+			else if(car_arr[i].toString() == "2")
+				query += "lgt_p1 != '0'";
+		
+			if(i < (car_arr.length - 1))
+				query += " AND ";
+		}
+		
+		mCursor = mDB.query("chain_list", null, query, new String[]{flag}, null, null, null);
+		
+		startManagingCursor(mCursor);
+		
+		items = new ArrayList<Chaininfo>();
+		ChainAdapter m_adapter = new ChainAdapter(this, R.layout.row_list, items);
+        setListAdapter(m_adapter);
+		
+		if(mCursor.getCount() > 0)
+		{
+			mCursor.moveToFirst();
+			
+			for(int i = 0; i<mCursor.getColumnCount(); i++)
+			{
+				int chain_no = mCursor.getInt(mCursor.getColumnIndex("_id"));
+				int skt_p1 = mCursor.getInt(mCursor.getColumnIndex("skt_p1"));
+				int skt_p2 = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex("skt_p2")));
+				int kt_p1 = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex("kt_p1")));
+				int kt_p2 = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex("kt_p2")));
+				int lgt_p1 = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex("lgt_p1")));
+				int lgt_p2 = Integer.parseInt(mCursor.getString(mCursor.getColumnIndex("lgt_p2")));
+				String name = mCursor.getString(mCursor.getColumnIndex("name"));
+				
+				Chaininfo cinfo = new Chaininfo("", chain_no, name, "", "", 0f, 0f, skt_p1, skt_p2, kt_p1, kt_p2, lgt_p1, lgt_p2, 0);
+				items.add(cinfo);
+				mCursor.moveToNext();
+			}
+		}
+		
+		m_adapter = new ChainAdapter(this, R.layout.row_list, items);
+		
+        setListAdapter(m_adapter);
+		
+		// TODO Put your code here
+	}
+	
+	private Chaininfo cinfo;
+	protected void onListItemClick(ListView I, View v, int position, long id){
+		cinfo = items.get(position);
+		new AlertDialog.Builder(Resultdiscountinfo.this)
+		.setTitle("검색 확인")
+		.setMessage(cinfo.getname()+"의 지점을 가까운 지역에서 검색 하시겠습니까?")
+		.setPositiveButton("확인", new OnClickListener(){
+			public void onClick(DialogInterface dialog, int whichButton){
+				Intent intent = new Intent(Resultdiscountinfo.this, LocaleSelect.class);
+				intent.putExtra("chain_no", cinfo.getchain_no());
+				intent.putExtra("chain_name", cinfo.getname());
+				startActivity(intent);
+			}
+		})
+		.setNegativeButton("취소", new OnClickListener(){
+			public void onClick(DialogInterface dialog, int whichButton){
+				
+			}
+		}).show();
+	}
+	
+	public class ChainAdapter extends ArrayAdapter<Chaininfo> {
+
+        private ArrayList<Chaininfo> items;
+
+        public ChainAdapter(Context context, int textViewResourceId, ArrayList<Chaininfo> items) {
+                super(context, textViewResourceId, items);
+                this.items = items;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+                View v = convertView;
+                if (v == null) {
+                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.row_list, null);
+                }
+                Chaininfo p = items.get(position);
+                if (p != null) {
+                        TextView tt = (TextView) v.findViewById(R.id.Brand_name);
+                        TextView bt = (TextView) v.findViewById(R.id.SKTdiscount);
+                        TextView bt2 = (TextView) v.findViewById(R.id.KTdiscount);
+                        TextView bt3 = (TextView) v.findViewById(R.id.LGTdiscount);
+                        
+                        if(tt != null)
+                        	tt.setText(p.getname());                            
+                        
+                        if(bt != null)
+                        	bt.setText("SKT : "+p.getskt_p1() + "%");
+                        
+                        if(bt2 != null)
+                        	bt2.setText("KT : "+p.getkt_p1() + "%");
+                        
+                        if(bt3 != null)
+                        	bt3.setText("LGT : "+p.getlgt_p1() + "%");
+                        
+                }
+            return v;
+        }
+	}
+}

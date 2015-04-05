@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:background="@drawable/bg"
+  android:layout_width="match_parent"
+  android:gravity="center"
+  android:layout_height="match_parent">
+<LinearLayout
+  	    android:layout_width="wrap_content"
+  	    android:layout_height="wrap_content"
+  	    android:orientation="vertical"
+  	    >
+	<ImageView android:id="@+id/ImageView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/lifestylelogo" android:layout_gravity="center"></ImageView>
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:gravity="center"
+	    android:text="@string/lifestylelable"
+	    android:textSize="16sp" >
+	</TextView>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:textSize="10px"></TextView>
+	
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Life_btn1" android:layout_gravity="center" android:background="@drawable/lifestyle_btn1"></ImageView>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/lifestylemenu2" android:id="@+id/Life_btn2" android:layout_gravity="center"></ImageView>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/lifestylemenu3" android:id="@+id/Life_btn3" android:layout_gravity="center"></ImageView>
+	</LinearLayout>
+</LinearLayout>

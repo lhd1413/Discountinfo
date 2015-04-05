@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="114px"
+  android:background="@drawable/bg2"
+  android:orientation="vertical">
+<ImageView android:paddingTop="5px" android:paddingLeft="11px" android:id="@+id/ImageView01" android:layout_height="111px" android:layout_width="99px"></ImageView>
+<ImageView android:id="@+id/ImageView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/lists_aline" android:layout_alignParentBottom="true"></ImageView>
+<TextView android:text="tt" android:paddingTop="10px" android:paddingLeft="13px" android:layout_toRightOf="@+id/ImageView01" android:layout_width="wrap_content" android:id="@+id/Brand_name2" android:layout_height="wrap_content" android:textColor="#ffffff" android:textStyle="bold"></TextView>
+<ImageView android:paddingLeft="13px" android:layout_toRightOf="@+id/ImageView01" android:layout_width="wrap_content" android:layout_below="@+id/Brand_name2" android:layout_height="wrap_content" android:src="@drawable/icons_relax_beauty" android:id="@+id/detail_mene2"></ImageView>
+<TextView android:paddingTop="5px" android:paddingLeft="13px" android:layout_toRightOf="@+id/ImageView01" android:layout_width="wrap_content" android:text="@+id/TextView01" android:layout_height="wrap_content" android:layout_below="@+id/detail_mene2" android:id="@+id/distance" android:textSize="14sp"></TextView>
+<FrameLayout android:id="@+id/FrameLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_alignParentTop="true">
+	<ImageView android:id="@+id/discount_arrow2" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>			
+	<TextView android:id="@+id/discount_label2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10pt" android:textColor="#ffffff" android:layout_gravity="center_horizontal" android:paddingTop="70px" android:paddingLeft="3px"></TextView>
+</FrameLayout>
+
+
+
+
+
+
+</RelativeLayout>

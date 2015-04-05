@@ -1,0 +1,412 @@
+package com.discountinfo;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.FilterQueryProvider;
+import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.SimpleCursorAdapter.CursorToStringConverter;
+
+public class LocaleSelect extends MapActivity implements LocationListener{
+	protected SQLiteDatabase mDB = null;
+	protected LocdbHandler mDatabase = null;
+	
+	protected String select_loc;
+	protected String select_lan;
+	protected String select_lon;
+	
+	protected String best;
+	protected int life_style;
+	protected int chain_no;
+	protected String chain_name;
+	
+	protected boolean search_result;
+	
+	private LocationManager location_mg = null;
+	private Location lastLocation = null;;
+	private Cursor mCursor = null;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		life_style = getIntent().getIntExtra("lifestyle", 0);
+		chain_no = getIntent().getIntExtra("chain_no", 0);
+		chain_name = getIntent().getStringExtra("chain_name");
+		search_result = false;
+		
+		mDatabase = new LocdbHandler(this.getApplicationContext());
+		mDB = mDatabase.getWritableDatabase();
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.selectlocal);
+		
+		final MapView map = (MapView) findViewById(R.id.map);
+        final MapController mapControl = map.getController();
+        mapControl.setZoom(17);
+
+        map.setBuiltInZoomControls(true);
+        fillAutoCompleteFromDatabase();
+        final Button gotoList = (Button) findViewById(R.id.apply_btn);
+		gotoList.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(search_result)
+				{
+					Intent intent = new Intent(LocaleSelect.this, Searchresult.class);
+					final MapView map = (MapView) findViewById(R.id.map);
+					mCursor.close();
+					intent.putExtra("lat", map.getMapCenter().getLatitudeE6());
+					intent.putExtra("lon", map.getMapCenter().getLongitudeE6());
+					intent.putExtra("lifestyle", life_style);
+					intent.putExtra("chain_no", chain_no);
+					intent.putExtra("location_name", select_loc);
+					intent.putExtra("chain_name", chain_name);
+					startActivity(intent);
+				}else{
+					
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+					AutoCompleteTextView av = (AutoCompleteTextView)findViewById(R.id.EditTextSpecies);
+					imm.hideSoftInputFromWindow(av.getWindowToken(), 0);
+					
+					if(av.getText().toString() == "")
+					{
+						Toast.makeText(getApplicationContext(), "검색할 지역을 입력하여 주십시오.", Toast.LENGTH_LONG);
+					}else{
+						try {
+							String placeName = av.getText().toString();
+							final Geocoder coder = new Geocoder(getApplicationContext());
+							
+		                    List<Address> geocodeResults = coder.getFromLocationName(placeName, 3);
+		                    Iterator<Address> locations = geocodeResults.iterator();
+		                    
+		                    boolean geo_search = false;
+		                    double lat = 0f;
+		                    double lon = 0f;
+		                    while (locations.hasNext()) {
+		                        Address loc = locations.next();
+		                        if(loc.getCountryCode().equals("KR"))
+		                        {
+			                        lat = loc.getLatitude();
+			                        lon = loc.getLongitude();
+			                        
+			                        geo_search = true;
+			                        break;
+		                        }
+		                    }
+		                    
+		                    
+		                    ImageView pinset = (ImageView)findViewById(R.id.Pinset);
+					        TextView label = (TextView)findViewById(R.id.Selectlabel);
+					        
+		                    if(geo_search)
+		                    {
+		                    	select_loc = av.getText().toString();
+		                    	search_result = true;
+		                    	Log.e("test", "searchok");
+			                    GeoPoint newPoint = new GeoPoint((int)(lat * 1E6), (int)(lon*1E6));
+			                    
+			                    final MapView map = (MapView) findViewById(R.id.map);
+						        final MapController mapControl = map.getController();
+						        
+						        mapControl.animateTo(newPoint);
+						        
+						        pinset.setVisibility(View.VISIBLE);
+						        label.setVisibility(View.VISIBLE);
+						        gotoList.setText(R.string.confirmbtn);
+		                    }else{
+		                    	search_result = false;
+		                    	Log.e("test", "searchno");
+		                    	pinset.setVisibility(View.INVISIBLE);
+		                    	label.setVisibility(View.INVISIBLE);
+		                    	Toast.makeText(getApplicationContext(), "검색 결과가 없습니다.", Toast.LENGTH_LONG).show();
+		                    	gotoList.setText(R.string.apply_btn);
+		                    }
+		                    
+		                } catch (IOException e) {
+		                    Log.e("Mapping", "Failed to get location info", e);
+		                }
+					}
+				}
+			}
+		});
+		
+		location_mg = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
+        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+        best = location_mg.getBestProvider(criteria, true);       
+        Button geocode = (Button) findViewById(R.id.Nowlocalbtn);
+        lastLocation = location_mg.getLastKnownLocation(best);
+        location_mg.requestLocationUpdates(best, 1000, 0, LocaleSelect.this);
+        geocode.setOnClickListener(new View.OnClickListener() {
+
+	            public void onClick(View v) {
+	            	Log.e("testbed", "test");
+
+	            	lastLocation = location_mg.getLastKnownLocation(best);
+	                if(lastLocation != null)
+	                {
+		            	double lon = lastLocation.getLongitude();
+		            	double lat = lastLocation.getLatitude();
+		            	GeoPoint newPoint = new GeoPoint((int)(lat * 1E6), (int)(lon *1E6));
+		                final MapView map = (MapView) findViewById(R.id.map);
+					    final MapController mapControl = map.getController();
+					        
+					    mapControl.animateTo(newPoint);
+					    
+					    ImageView pinset = (ImageView)findViewById(R.id.Pinset);
+				        TextView label = (TextView)findViewById(R.id.Selectlabel);
+				        final Button gotoList = (Button) findViewById(R.id.apply_btn);
+	                    search_result = true;
+					    gotoList.setText(R.string.confirmbtn);
+	                        
+					    pinset.setVisibility(View.VISIBLE);
+					    label.setVisibility(View.VISIBLE);
+	                }else{
+	                	Toast.makeText(getApplicationContext(), "현재 위치를 확인할 수 없습니다.", Toast.LENGTH_LONG).show();
+	                }
+	            }
+
+	        });
+	}
+	
+	@Override
+    protected boolean isRouteDisplayed() {
+        // we do not display routes
+        return true;
+    }
+	
+	void fillAutoCompleteFromDatabase()
+	{
+		mCursor = mDB.query("location_list", new String[]{"_id", "name"}, null, null,
+				null, null, null);
+		
+		try{
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this
+					, android.R.layout.simple_dropdown_item_1line
+					, mCursor, new String[]{"name"}, new int[]{android.R.id.text1});
+			
+			adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+			adapter.setCursorToStringConverter(new CursorToStringConverter() {
+				@Override
+				public CharSequence convertToString(Cursor cursor) {
+					return cursor.getString(cursor.getColumnIndex("name"));
+				}
+			});
+			
+			adapter.setFilterQueryProvider(new FilterQueryProvider() {
+				@Override
+				public Cursor runQuery(CharSequence constraint) {
+					Cursor cur = mDB.query("location_list", 
+							new String[]{"_id", "name"},
+							"name like ?", 
+							new String[]{(String) constraint + "%"}, 
+							null,null,null);					
+					
+					startManagingCursor(cur);	
+					return cur;
+				}
+			});
+
+			AutoCompleteTextView av = (AutoCompleteTextView)findViewById(R.id.EditTextSpecies);
+	        
+			av.setOnKeyListener(new View.OnKeyListener() {
+				@Override
+				public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+					// TODO Auto-generated method stub
+					if(arg2.getAction() == KeyEvent.ACTION_DOWN)
+					{
+						Log.e("test", "Event Dispatched");
+						if(arg1 == KeyEvent.KEYCODE_ENTER )
+						{
+							InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+							AutoCompleteTextView av = (AutoCompleteTextView)findViewById(R.id.EditTextSpecies);
+							imm.hideSoftInputFromWindow(av.getWindowToken(), 0);
+							
+							try {
+								String placeName = av.getText().toString();
+								final Geocoder coder = new Geocoder(getApplicationContext());
+								
+			                    List<Address> geocodeResults = coder.getFromLocationName(placeName, 3);
+			                    Iterator<Address> locations = geocodeResults.iterator();
+			                    
+			                    boolean geo_search = false;
+			                    double lat = 0f;
+			                    double lon = 0f;
+			                    while (locations.hasNext()) {
+			                        Address loc = locations.next();
+			                        if(loc.getCountryCode().equals("KR"))
+			                        {
+				                        lat = loc.getLatitude();
+				                        lon = loc.getLongitude();
+				                        
+				                        geo_search = true;
+				                        break;
+			                        }
+			                    }
+			                    
+			                    
+			                    ImageView pinset = (ImageView)findViewById(R.id.Pinset);
+						        TextView label = (TextView)findViewById(R.id.Selectlabel);
+						        final Button gotoList = (Button) findViewById(R.id.apply_btn);
+			                    if(geo_search)
+			                    {
+			                    	search_result = true;
+							        gotoList.setText(R.string.confirmbtn);
+			                    	Log.e("test", "searchok");
+				                    GeoPoint newPoint = new GeoPoint((int)(lat * 1E6), (int)(lon*1E6));
+				                    final MapView map = (MapView) findViewById(R.id.map);
+							        final MapController mapControl = map.getController();
+							        
+							        mapControl.animateTo(newPoint);
+							        
+							        pinset.setVisibility(View.VISIBLE);
+							        label.setVisibility(View.VISIBLE);
+			                    }else{
+			                    	search_result = false;
+			                    	Log.e("test", "searchno");
+			                    	gotoList.setText(R.string.apply_btn);
+			                    	
+			                    	pinset.setVisibility(View.INVISIBLE);
+			                    	label.setVisibility(View.INVISIBLE);
+			                    	Toast.makeText(getApplicationContext(), "검색 결과가 없습니다.", Toast.LENGTH_LONG).show();
+			                    	
+			                    	
+			                    }
+			                    
+			                    return true;
+			                } catch (IOException e) {
+			                    Log.e("Mapping", "Failed to get location info", e);
+			                }
+						}
+					}
+					
+					if(search_result)
+					{
+						ImageView pinset = (ImageView)findViewById(R.id.Pinset);
+				        TextView label = (TextView)findViewById(R.id.Selectlabel);
+				        final Button gotoList = (Button) findViewById(R.id.apply_btn);
+	                    
+						search_result = false;
+						gotoList.setText(R.string.apply_btn);
+                    	
+						pinset.setVisibility(View.INVISIBLE);
+                    	label.setVisibility(View.INVISIBLE);
+					}
+					return false;
+				}
+			});
+			av.setAdapter(adapter);
+	        av.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				public void onItemClick(
+	                AdapterView<?> parent, View view, int position, long id) {	
+						final Long dbid = id;
+						Cursor c = mDB.query("location_list", new String[]{"lat","lon"}, "_id = ?", new String[]{dbid.toString()}, null, null, null);
+						
+						if(c.getColumnCount() > 0)
+						{
+							c.moveToFirst();
+					
+							select_lan = c.getString(c.getColumnIndex("lat"));
+							select_loc = c.getString(c.getColumnIndex("lon"));
+						}
+						
+						double temp_lan = Double.parseDouble(select_lan);
+						double temp_loc = Double.parseDouble(select_loc);
+						
+						GeoPoint newPoint = new GeoPoint((int)(temp_lan * 1E6), (int)(temp_loc*1E6));
+						final MapView map = (MapView) findViewById(R.id.map);
+				        final MapController mapControl = map.getController();
+				        
+				        mapControl.animateTo(newPoint);
+				        
+				        final Button gotoList = (Button) findViewById(R.id.apply_btn);
+	                    gotoList.setText(R.string.confirmbtn);
+				        search_result = true;
+						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+						AutoCompleteTextView av = (AutoCompleteTextView)findViewById(R.id.EditTextSpecies);
+						av.requestFocus(1);
+						imm.hideSoftInputFromWindow(av.getWindowToken(), 0);
+						select_loc = av.getText().toString();
+						
+						ImageView pinset = (ImageView)findViewById(R.id.Pinset);
+				        pinset.setVisibility(0);
+				        
+				        TextView label = (TextView)findViewById(R.id.Selectlabel);
+				        label.setVisibility(0);
+
+						c.close();
+				        
+	            }
+	        });
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+		
+	
+	
+    public void onLocationChanged(Location location) {
+        String locInfo = String.format("Current loc = (%f, %f) @ (%f meters up)", location.getLatitude(), location.getLongitude(), location.getAltitude() );
+        if (lastLocation != null) {
+            float distance = location.distanceTo(lastLocation);
+            locInfo += String.format("\n Distance from last = %f meters", distance);
+            
+        }
+        lastLocation = location;
+        
+        
+    }
+
+    public void onProviderDisabled(String provider) {
+        
+    }
+
+    public void onProviderEnabled(String provider) {
+        
+    }
+    
+    private static final Map<Integer, String> providerStatusMap = new HashMap<Integer, String>() {
+    	{
+            put(LocationProvider.AVAILABLE, "Available");
+            put(LocationProvider.OUT_OF_SERVICE, "Out of Service");
+            put(LocationProvider.TEMPORARILY_UNAVAILABLE, "Temporarily Unavailable");
+            put(-1, "Not Reported");
+        }
+    };
+    
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        int satellites = extras.getInt("satellites", -1);
+        
+        String statusInfo = String.format("Provider: %s, status: %s, satellites: %d", provider, providerStatusMap.get(status), satellites);
+        Log.v("GPS", statusInfo);
+    }
+}

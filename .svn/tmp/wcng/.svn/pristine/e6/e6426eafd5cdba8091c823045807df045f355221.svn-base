@@ -1,0 +1,39 @@
+package com.discountinfo;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class LocdbHandler extends SQLiteOpenHelper {
+	private static final String DATABASE_NAME = "loc.db";
+    private static final int DATABASE_VERSION = 1;
+
+        
+    LocdbHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+ 
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		
+		// Create the PetType table
+		db.execSQL("CREATE TABLE IF NOT EXISTS location_list (" +
+				  "_id TEXT," +
+				  "name TEXT," +
+				  "lat TEXT," +
+				  "lon TEXT" +
+			  	  ")");
+		
+		
+	}
+	
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// Housekeeping here. Implement how "move" your application data during an upgrade of schema versions		
+	}
+
+	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+	}
+}

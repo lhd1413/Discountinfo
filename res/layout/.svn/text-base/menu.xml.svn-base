@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+<Button android:id="@+id/Menu_btn1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/menu1"></Button>
+<Button android:id="@+id/Menu_btn2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/menu2"></Button>
+<Button android:id="@+id/Menu_btn3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/menu3"></Button>
+<Button android:id="@+id/Menu_btn4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/menu4"></Button>
+</LinearLayout>

@@ -1,0 +1,37 @@
+package com.discountinfo;
+
+import android.app.TabActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TabHost;
+
+public class Discountinfo extends TabActivity {
+	/**
+	 * @see android.app.Activity#onCreate(Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.discountinfo);
+		
+		String career = "1";
+		
+		Intent intent1 = new Intent().setClass(this, Resultdiscountinfo.class);
+		
+		intent1.putExtra("display_flag", "1");
+		intent1.putExtra("career", career);
+		
+		Intent intent2 = new Intent().setClass(this, Resultdiscountinfo.class);
+		intent2.putExtra("display_flag", "2");
+		intent2.putExtra("career", career);
+		
+		Intent intent3 = new Intent().setClass(this, Resultdiscountinfo.class);
+		intent3.putExtra("display_flag", "3");
+		intent3.putExtra("career", career);
+		
+        TabHost tabHost = getTabHost();
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("먹을거리").setContent(intent1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("즐길거리").setContent(intent2));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("여가거리").setContent(intent3));
+	}
+}

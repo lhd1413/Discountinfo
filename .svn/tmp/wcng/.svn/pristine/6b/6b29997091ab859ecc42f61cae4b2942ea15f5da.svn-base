@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest android:versionCode="1" android:versionName="1.0"
+    package="com.discountinfo" xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:label="@string/app_name" android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".LocaleSelect"/>
+        <activity android:name=".Searchresult"/>
+        <activity android:name=".Menu"/>
+        <activity android:name=".Lifestyle"/>
+        <activity android:name=".ResultListActivity"/>
+        <uses-library android:name="com.google.android.maps"/>
+        <activity android:name=".ResultListActivity"/>
+        <activity android:name=".ResultMapActivity"/>
+        <activity android:name=".Menu"/>
+        <activity android:name=".Lifestyle"/>
+        <activity android:name=".Bookmark"/>
+        <activity android:name=".Discountinfo"/>
+        <activity android:name=".Config"/>
+        <activity android:name=".Bookmarklist1"/>
+        <activity android:name=".Bookmarklist2"/>
+        <activity android:name=".Resultdiscountinfo"/>
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-sdk android:minSdkVersion="6"/>
+</manifest>

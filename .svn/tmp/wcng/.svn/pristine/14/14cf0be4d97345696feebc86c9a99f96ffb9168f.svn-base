@@ -1,0 +1,17 @@
+package com.discountinfo;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class Bookmarklist1 extends Activity {
+	/**
+	 * @see android.app.Activity#onCreate(Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.bookmark_list1);
+		// TODO Put your code here
+	}
+}

@@ -1,0 +1,54 @@
+8
+
+dir
+3
+https://uxpediaproject.googlecode.com/svn/Discountinfo/assets/database
+https://uxpediaproject.googlecode.com/svn
+
+
+
+2010-03-30T23:54:07.692347Z
+3
+lhd1413@naver.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+27dc67e5-cdfe-fea4-9853-4bb1400759cb
+
+chain.db
+file
+11
+
+
+
+2010-04-09T04:22:33.304000Z
+f7024398f93b6d230ac872197b9edaee
+2010-04-04T10:36:33.782314Z
+11
+lhd1413@naver.com
+has-props
+
+loc.db
+file
+
+
+
+
+2010-03-28T16:12:12.920000Z
+2bb4500fc2aa4ba8e34304d43e46f24e
+2010-03-30T23:54:07.692347Z
+3
+lhd1413@naver.com
+has-props
+

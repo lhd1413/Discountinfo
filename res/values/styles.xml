@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="map_select_style">
+		<item name="android:textSize">14px</item>
+	</style>
+	<style name="MyListView" parent="@android:style/Widget.ListView">
+		<item name="android:listSelector">@drawable/list_selector_background_focus</item>
+	</style>
+</resources>

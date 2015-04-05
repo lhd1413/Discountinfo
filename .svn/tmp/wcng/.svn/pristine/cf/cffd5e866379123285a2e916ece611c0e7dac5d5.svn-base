@@ -1,0 +1,92 @@
+package com.discountinfo;
+
+public class Chaininfo {
+	private String _id;
+    private int chain_no;
+    private String name;
+    private String tele;
+    private String address;
+    private double mapx = 0f;
+    private double mapy = 0f;
+    private int skt_p1;
+    private int skt_p2;
+    private int kt_p1;
+    private int kt_p2;
+    private int lgt_p1;
+    private int lgt_p2;
+    private int distance;
+    
+    public Chaininfo(String __id, int _chain_no, String _name, String _tele, String _address, double _mapx, double _mapy, int _skt_p1, int _skt_p2, int _kt_p1, int _kt_p2, int _lgt_p1, int _lgt_p2, int _distance){
+    	this._id = __id;
+    	this.chain_no = _chain_no;
+    	this.name = _name;
+    	this.tele = _tele;
+    	this.address = _address;
+    	this.mapx = _mapx;
+    	this.mapy = _mapy;
+    	this.skt_p1 = _skt_p1;
+    	this.skt_p2 = _skt_p2;
+    	this.kt_p1 = _kt_p1;
+    	this.kt_p2 = _kt_p2;
+    	this.lgt_p1 = _lgt_p1;
+    	this.lgt_p2 = _lgt_p2;
+    	this.distance = _distance;
+    }
+    
+    public String get_id() {
+        return _id;
+    }
+
+    public int getchain_no() {
+        return chain_no;
+    }
+    
+    public String gettele() {
+        return tele;
+    }
+    
+    public String getname() {
+        return name;
+    }
+    
+    public String getaddress() {
+        return address;
+    }
+    
+    
+    public double getmapx() {
+        return mapx;
+    }
+    
+    public double getmapy() {
+        return mapy;
+    }
+    
+    public int getskt_p1() {
+        return skt_p1;
+    }
+    
+    public int getskt_p2() {
+        return skt_p2;
+    }
+    
+    public int getlgt_p1() {
+        return lgt_p1;
+    }
+    
+    public int getlgt_p2() {
+        return lgt_p2;
+    }
+    
+    public int getkt_p1() {
+        return kt_p1;
+    }
+    
+    public int getkt_p2() {
+        return kt_p2;
+    }
+    
+    public int getdistance() {
+        return distance;
+    }   
+}

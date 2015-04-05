@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@drawable/bg"
+  android:padding="11px"
+  android:orientation="vertical">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+  	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+		<ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/detail_mene"></ImageView>
+		<View android:layout_width="3px" android:layout_height="10px"/>
+		<TextView android:textStyle="bold" android:textColor="#ffffff" android:textSize="20sp" android:layout_gravity="left|center" android:id="@+id/detail_brand_name" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	
+	</LinearLayout>
+	<View android:layout_width="10px" android:layout_height="10px"/>
+	<LinearLayout  android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		<FrameLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:layout_gravity="center">
+			<com.google.android.maps.MapView
+	        	android:id="@+id/detail_map"
+	        	android:apiKey="0ZJm4VkpWMnJdf03DTEG5dIMGjgVB0AiyHtgfyA"
+	        	android:layout_width="match_parent"
+	        	android:layout_height="match_parent" android:clickable="false" android:layout_gravity="center"/>
+			<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/mark_img" android:layout_gravity="center"></ImageView>
+		</FrameLayout>
+	    <View android:layout_width="10px" android:layout_height="10px"/> 
+	    <TableLayout android:id="@+id/TableLayout01" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="right" >
+	        	<TableRow>
+	        		<ImageButton android:id="@+id/detail_bookmark_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/detail_history_btn"></ImageButton>
+	        		<View android:layout_width="10px" android:layout_height="10px"/> 
+	        		<ImageButton android:id="@+id/detail_twitter_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/detail_twitter_btn"></ImageButton>
+	        	</TableRow>
+	        	<View android:layout_height="10px"/> 
+	        	<TableRow>
+	        		<ImageButton android:layout_span="3" android:id="@+id/detail_call_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/detail_call_btn"></ImageButton>
+	        	</TableRow>
+	        </TableLayout>
+	</LinearLayout> 
+	<View android:layout_width="10px" android:layout_height="10px"/> 	        		
+	<LinearLayout android:orientation="vertical" android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:background="@drawable/detail_box" android:padding="10px" android:layout_width="fill_parent">
+		<TextView android:textColor="#ffffff" android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/detail_page_label1" android:textStyle="bold" android:textSize="13sp"></TextView>
+		<TextView android:textColor="#cccccc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/detail_address" android:textSize="11sp"></TextView>
+		<TextView android:textColor="#ffffff"  android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/detail_page_label2" android:textSize="13sp"></TextView>
+		<TextView android:textColor="#cccccc" android:id="@+id/detail_businesshour" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp"></TextView>
+		<TextView android:textColor="#ffffff"  android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/detail_page_label3" android:textSize="13sp"></TextView>
+		<TextView android:textColor="#cccccc" android:id="@+id/detail_distance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp"></TextView>
+	</LinearLayout>	
+	<View android:layout_width="10px" android:layout_height="10px"/>
+	<LinearLayout android:orientation="vertical"  android:layout_height="wrap_content" android:background="@drawable/detail_box" android:padding="10px" android:layout_width="fill_parent">
+		<TextView android:textColor="#ffffff" android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/detail_page_label4" android:textStyle="bold" android:textSize="13sp"></TextView>
+		<TextView android:textColor="#cccccc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/detail_discount_info" android:textSize="11sp"></TextView>
+	</LinearLayout>
+	<View android:layout_width="10px" android:layout_height="10px"/>
+	<LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:background="@drawable/detail_box" android:padding="10px" android:layout_width="fill_parent">
+		<TextView android:textColor="#ffffff" android:id="@+id/TextView03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/detail_page_label5" android:textStyle="bold" android:textSize="13sp"></TextView>
+		<TextView android:textColor="#cccccc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/detail_way" android:textSize="11sp"></TextView>
+	</LinearLayout>
+	</LinearLayout>
+</LinearLayout>

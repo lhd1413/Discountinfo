@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <ImageView android:id="@+id/ImageView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="50px" android:minHeight="50px"></ImageView>
+	<TableLayout android:padding="6dip" android:id="@+id/TableLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:stretchColumns="0">
+		<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content">
+			<TextView android:id="@+id/Brand_name2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			<TextView android:id="@+id/SKTdiscount2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		</TableRow>
+		<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content">
+			<TextView android:id="@+id/KTdiscount2" android:layout_width="wrap_content" android:layout_column = "1" android:layout_height="wrap_content"></TextView>
+		</TableRow>
+		<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content">
+			<TextView android:id="@+id/Distance" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			<TextView android:id="@+id/LGTdiscount2" android:layout_width="wrap_content" android:layout_column = "1" android:layout_height="wrap_content"></TextView>
+		</TableRow>
+	</TableLayout>
+</LinearLayout>

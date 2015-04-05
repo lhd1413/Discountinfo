@@ -1,0 +1,98 @@
+8
+
+dir
+2
+https://uxpediaproject.googlecode.com/svn/Discountinfo
+https://uxpediaproject.googlecode.com/svn
+
+
+
+2010-03-30T23:52:38.043663Z
+2
+lhd1413@naver.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+27dc67e5-cdfe-fea4-9853-4bb1400759cb
+
+.classpath
+file
+3
+
+
+
+2010-03-27T12:44:48.898000Z
+8ec20b14df17ef83253beda6c391f516
+2010-03-30T23:54:07.692347Z
+3
+lhd1413@naver.com
+has-props
+
+.project
+file
+3
+
+
+
+2010-03-27T12:44:48.518000Z
+6c725486799e04a566108e9f746f8a2a
+2010-03-30T23:54:07.692347Z
+3
+lhd1413@naver.com
+has-props
+
+.settings
+dir
+
+AndroidManifest.xml
+file
+11
+
+
+
+2010-04-04T06:49:40.361000Z
+d9267efad7e9c49efdb6c2ba9144eae1
+2010-04-04T10:36:33.782314Z
+11
+lhd1413@naver.com
+has-props
+
+assets
+dir
+
+bin
+dir
+
+default.properties
+file
+3
+
+
+
+2010-03-27T12:44:48.868000Z
+4b0aa741df4f45de5680f6ab6874799a
+2010-03-30T23:54:07.692347Z
+3
+lhd1413@naver.com
+has-props
+
+gen
+dir
+
+res
+dir
+
+src
+dir
+

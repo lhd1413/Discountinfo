@@ -1,0 +1,203 @@
+package com.discountinfo;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
+
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Log;
+
+public class ResultMapActivity extends MapActivity {
+	protected double lat = 0f;
+	protected double lon = 0f;
+	protected int lifestyle;
+	protected int chain_no;
+	private ArrayList<Chaininfo> array_list;
+	private String car;
+	/**
+	 * @see android.app.Activity#onCreate(Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.resultmap);
+		
+		final MapView map = (MapView) findViewById(R.id.map);
+        //map.setSatellite(true);
+        final MapController mapControl = map.getController();
+        mapControl.setZoom(16);
+
+        map.setBuiltInZoomControls(true);
+        List<Overlay> mapOverlays = map.getOverlays();
+        
+        lat = getIntent().getDoubleExtra("lat", 0);
+        lon = getIntent().getDoubleExtra("lon", 0);
+        lifestyle = getIntent().getIntExtra("lifestyle", 0);
+
+        chain_no = getIntent().getIntExtra("chain_no", 0);
+        car = getIntent().getStringExtra("career");
+        
+        Drawable marker1 = getResources().getDrawable(R.drawable.people);
+        marker1.setBounds(0, 0, marker1.getIntrinsicWidth(), marker1.getIntrinsicHeight());
+        
+        Drawable marker2 = getResources().getDrawable(R.drawable.pt1);
+        marker2.setBounds(0, 0, marker2.getIntrinsicWidth(), marker2.getIntrinsicHeight());
+        
+        Drawable marker3 = getResources().getDrawable(R.drawable.pt2);
+        marker3.setBounds(0, 0, marker3.getIntrinsicWidth(), marker3.getIntrinsicHeight());
+        
+        Drawable marker4 = getResources().getDrawable(R.drawable.pt3);
+        marker4.setBounds(0, 0, marker4.getIntrinsicWidth(), marker4.getIntrinsicHeight());
+        
+        ItemsOverlay mk1_item = new ItemsOverlay(marker1);
+        ItemsOverlay mk2_item = new ItemsOverlay(marker2);
+        ItemsOverlay mk3_item = new ItemsOverlay(marker3);
+        ItemsOverlay mk4_item = new ItemsOverlay(marker4);
+        
+        GeoPoint point = new GeoPoint((int)(lat*1E6), (int)(lon*1E6));
+        OverlayItem overlayitem = new OverlayItem(point, "", "");
+        mk1_item.addOverlay(overlayitem);
+        mapOverlays.add(mk1_item);
+        
+        
+        try{
+        	URL url;
+        	if(lifestyle == 0)
+        		url = new URL("http://airnaru.com/discount_search.php?x="+lon+"&y="+lat+"&q="+chain_no+"&career="+car);
+        	else
+        		url = new URL("http://airnaru.com/discount_search.php?x="+lon+"&y="+lat+"&cat_no="+lifestyle+"&career="+car);
+        	
+        	URLConnection connection;
+			connection = url.openConnection();
+			
+			HttpURLConnection httpconnection = (HttpURLConnection)connection;
+			
+			int responseCode = httpconnection.getResponseCode();
+			
+			if(responseCode == HttpURLConnection.HTTP_OK)
+			{
+				InputStream in = httpconnection.getInputStream();
+				
+				DocumentBuilderFactory dbf;
+				dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				
+				Document dom = db.parse(in);
+				
+				Element root = dom.getDocumentElement();
+				
+				NodeList items = root.getElementsByTagName("item");
+				
+				int length = items.getLength();
+				
+				array_list = new ArrayList<Chaininfo>();
+				
+				if(items != null && length > 0)
+				{
+					for(int i=0; i < length; i++)
+					{
+						Element item = (Element) items.item(i);
+						
+						Element _id = (Element) item.getElementsByTagName("_id").item(0);
+						Element chain_no = (Element) item.getElementsByTagName("chain_no").item(0);
+						Element name = (Element) item.getElementsByTagName("name").item(0);
+						Element tele = (Element) item.getElementsByTagName("tele").item(0);
+						Element address = (Element) item.getElementsByTagName("address").item(0);
+						Element mapx = (Element) item.getElementsByTagName("mapx").item(0);
+						Element mapy = (Element) item.getElementsByTagName("mapy").item(0);
+						Element skt_p1 = (Element) item.getElementsByTagName("skt_p1").item(0);
+						Element skt_p2 = (Element) item.getElementsByTagName("skt_p2").item(0);
+						Element lgt_p1 = (Element) item.getElementsByTagName("lgt_p1").item(0);
+						Element lgt_p2 = (Element) item.getElementsByTagName("lgt_p2").item(0);
+						Element kt_p1 = (Element) item.getElementsByTagName("kt_p1").item(0);
+						Element kt_p2 = (Element) item.getElementsByTagName("kt_p2").item(0);
+						Element distance = (Element) item.getElementsByTagName("distance").item(0);
+						
+						Chaininfo cinfo = new Chaininfo(_id.getFirstChild().getNodeValue(), Integer.parseInt(chain_no.getFirstChild().getNodeValue()), name.getFirstChild().getNodeValue(), tele.getFirstChild().getNodeValue(), address.getFirstChild().getNodeValue(), Double.parseDouble(mapx.getFirstChild().getNodeValue()), Double.parseDouble(mapy.getFirstChild().getNodeValue()), Integer.parseInt(skt_p1.getFirstChild().getNodeValue()), Integer.parseInt(skt_p2.getFirstChild().getNodeValue()), Integer.parseInt(kt_p1.getFirstChild().getNodeValue()), Integer.parseInt(kt_p2.getFirstChild().getNodeValue()), Integer.parseInt(lgt_p1.getFirstChild().getNodeValue()), Integer.parseInt(lgt_p2.getFirstChild().getNodeValue()), Integer.parseInt(distance.getFirstChild().getNodeValue()));
+						if(_id.getFirstChild().getNodeValue() != null)
+							array_list.add(cinfo);
+						
+						int max_pt = 0;
+						
+						if(cinfo.getskt_p1() > max_pt)
+							max_pt = cinfo.getskt_p1();
+						
+						if(cinfo.getkt_p1() > max_pt)
+							max_pt = cinfo.getkt_p1();
+						
+						if(cinfo.getlgt_p1() > max_pt)
+							max_pt = cinfo.getlgt_p1();
+						
+						point = new GeoPoint((int)(cinfo.getmapy()*1E6),(int)(cinfo.getmapx()*1E6));
+						overlayitem = new OverlayItem(point, "", "");
+						if(max_pt <= 10)
+					        mk2_item.addOverlay(overlayitem);
+						else if(max_pt >= 10 && max_pt <= 30)
+							mk3_item.addOverlay(overlayitem);
+						else
+							mk4_item.addOverlay(overlayitem);		
+					}
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		Log.e("testbed", "tt");
+		
+		if(mk2_item.size() > 0)
+			mapOverlays.add(mk2_item);
+		
+		if(mk3_item.size() > 0)
+			mapOverlays.add(mk3_item);
+		
+		if(mk4_item.size() > 0)
+			mapOverlays.add(mk4_item);
+	}
+	
+	@Override
+    protected boolean isRouteDisplayed() {
+        // we do not display routes
+        return true;
+    }
+	
+	public class ItemsOverlay extends ItemizedOverlay<OverlayItem> {
+	    private ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();   
+	   
+	    public ItemsOverlay(Drawable defaultMarker) {
+	        super(defaultMarker);
+	    }
+
+	    public void addOverlay(OverlayItem overlay){
+	        items.add(overlay);
+	        populate();
+	    }
+	    @Override
+	    protected OverlayItem createItem(int index) {
+	        return items.get(index);
+	    }
+	    @Override
+	    public int size() {
+	        return items.size();
+	    }
+	}
+}
